@@ -2,9 +2,7 @@ package com.climawan.comp6844001.pertemuan5.hakubank.activities;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.climawan.comp6844001.pertemuan5.hakubank.R;
@@ -35,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
                     // Process the response as needed
                 }
             }
-         @Override
+
+            @Override
             public void onFailure(Call<ExampleResponse> call, Throwable t) {
                 // Handle the error
             }
@@ -53,9 +52,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         if (!isDeviceRooted() && !isEmulator()) {
-            startActivity(
-                    new Intent(this, LoginActivity.class)
-            );
+            Intent intent = new Intent(this, LoginActivity.class);
+            // Add extra data to intent securely if needed
+            intent.putExtra("EXTRA_DATA", "some_data");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
     }
 
