@@ -1,5 +1,6 @@
 package com.climawan.comp6844001.pertemuan5.hakubank.activities;
 
+import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,10 +8,15 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.climawan.comp6844001.pertemuan5.hakubank.R;
+import com.climawan.comp6844001.pertemuan5.hakubank.services.ApiEndpoint;
+import com.climawan.comp6844001.pertemuan5.hakubank.services.ApiService;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +24,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ApiEndpoint apiService = ApiService.getClient().create(ApiEndpoint.class);
+        apiService.getExampleData().enqueue(new Callback<ExampleResponse>() {
+            @Override
+            public void onResponse(Call<ExampleResponse> call, Response<ExampleResponse> response) {
+                if (response.isSuccessful()) {
+                    // Handle the response
+                    ExampleResponse exampleResponse = response.body();
+                    // Process the response as needed
+                }
+            }
+         @Override
+            public void onFailure(Call<ExampleResponse> call, Throwable t) {
+                // Handle the error
+            }
+        });
 
         if (isDeviceRooted() || isEmulator()) {
             // Handle rooted or emulated device
