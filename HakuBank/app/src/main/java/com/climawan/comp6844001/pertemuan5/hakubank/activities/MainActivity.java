@@ -1,3 +1,17 @@
+package com.climawan.comp6844001.pertemuan5.hakubank.activities;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import com.climawan.comp6844001.pertemuan5.hakubank.R;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
