@@ -1,17 +1,3 @@
-package com.climawan.comp6844001.pertemuan5.hakubank.activities;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
-
-import com.climawan.comp6844001.pertemuan5.hakubank.R;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -19,10 +5,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (isDeviceRooted()) {
-            // Handle rooted device
-            Toast.makeText(this, "This device is rooted. The application may not work properly.", Toast.LENGTH_LONG).show();
-            finish(); // Close the app if rooted device detected
+        if (isDeviceRooted() || isEmulator()) {
+            // Handle rooted or emulated device
+            Toast.makeText(this, "This device is not supported. The application may not work properly.", Toast.LENGTH_LONG).show();
+            finish(); // Close the app if rooted or emulated device detected
         }
     }
 
@@ -30,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if (!isDeviceRooted()) {
+        if (!isDeviceRooted() && !isEmulator()) {
             startActivity(
                     new Intent(this, LoginActivity.class)
             );
@@ -73,5 +59,23 @@ public class MainActivity extends AppCompatActivity {
             executedSuccessfully = false;
         }
         return executedSuccessfully;
+    }
+
+    private boolean isEmulator() {
+        String fingerprint = android.os.Build.FINGERPRINT;
+        String model = android.os.Build.MODEL;
+        String manufacturer = android.os.Build.MANUFACTURER;
+        String brand = android.os.Build.BRAND;
+        String device = android.os.Build.DEVICE;
+        String product = android.os.Build.PRODUCT;
+
+        return fingerprint.startsWith("generic")
+                || fingerprint.startsWith("unknown")
+                || model.contains("google_sdk")
+                || model.contains("Emulator")
+                || model.contains("Android SDK built for x86")
+                || manufacturer.contains("Genymotion")
+                || (brand.startsWith("generic") && device.startsWith("generic"))
+                || "google_sdk".equals(product);
     }
 }
